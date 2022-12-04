@@ -11,7 +11,7 @@ and interfaces with Google Calendar.
 This is still in progress. 
 This takes user input, error checks as needed, and parses it for the project 
 scheduler. 
-## Installation
+## Use
 Before running the code, the Google client library for python must be downloaded. 
 ```bash
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
