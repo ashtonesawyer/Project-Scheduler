@@ -3,6 +3,7 @@ This is the GUI for the project scheduler -- unfinished
 Takes user input, parses, and passes to scheduler
 Displays error messages for incorrect input
 To Do:
+    - Improve error checking
     - Improve layout of screen
     - Improve color and design
     - Improve time input -> give menu/buttons to ensure correct input
@@ -26,6 +27,10 @@ def displayText(text):
 
 
 # parse info from screen for project init
+# To Do: improve error checking 
+#   + endTime - startTime > 0
+#   + endDate - startDate > 0 
+#   + endDateTime - startDateTime >= hoursToComplete
 def parseInfo():
     displayText("")
 
@@ -81,12 +86,12 @@ def parseInfo():
     winMain(project)
 
 
-#setup window
+# setup window
 win = Tk()
 win.geometry("500x900")
 win.title("Project Scheduler")
 
-#create frames
+# create frames
 frm1 = ttk.Labelframe(win, text="Project Name: ", padding=10)
 frm2 = ttk.Labelframe(win, text="Number of hours to complete the project: ", padding=10)
 frm3 = ttk.Labelframe(win, text="Time (hours) to spend on project in one sitting: ", padding=10)
@@ -97,19 +102,19 @@ frm7 = ttk.Labelframe(win, text="Time between events (mins): ", padding=10)
 frm8 = ttk.Frame(win, padding=10)   # for init button
 frm9 = ttk.Labelframe(win, text="Output: ", padding=10)
 
-#layout frames
+# layout frames
 
-#name
+# name
 frm1.grid()
 nameEntry = Entry(frm1, width=40)
 nameEntry.grid()
 
-#hoursToComplete
+# hoursToComplete
 frm2.grid()
 hoursEntry = Entry(frm2, width=40)
 hoursEntry.grid()
 
-#maxHours + minHours
+# maxHours + minHours
 frm3.grid()
 maxLabel = Label(frm3, text="Max: ").grid(column=0, row=0)
 maxEntry = Entry(frm3, width=40)
@@ -118,14 +123,15 @@ minLabel = Label(frm3, text="Min: ").grid(column=0, row=1)
 minEntry = Entry(frm3, width=40)
 minEntry.grid(column=1, row=1)
 
-#endDate
+# endDate
 now = datetime.today()
 frm4.grid()
 endCalendar = Calendar(frm4, selectmode='day', year=now.year, month=now.month, day=now.day)
 endCalendar.grid()
 
 
-#daysOff - want to find a way to add menu, but this works for now
+# daysOff 
+# To Do: create button to add drop downs as needed rather than giving all at once
 frm5.grid()
 dayOptions = ["--Select--", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 menus = []
@@ -139,7 +145,7 @@ for i in range(6):
     offDrops += [tmp]
     offDrops[i].grid()
 
-#earliestTime + latestTime - not the best format, but works for now
+# earliestTime + latestTime - not the best format, but works for now
 frm6.grid()
 earliestLabel = Label(frm6, text="Earliest time to work: ").grid(column=0, row=0)
 earliestEntry = Entry(frm6, width=20)
@@ -158,17 +164,17 @@ earlyDrop.grid(column=2, row=0)
 lateDrop = OptionMenu(frm6, timeMenus[1], *timeOptions)
 lateDrop.grid(column=2, row=1)
 
-#buffer
+# buffer
 frm7.grid()
 bufferEntry = Entry(frm7, width=20)
 bufferEntry.grid()
 
-#go button
+# go button
 frm8.grid()
 button = Button(frm8, text="Generate Events", width=20, command=parseInfo)
 button.grid()
 
-#output
+# output
 frm9.grid(column=1, row=3)
 outputLabel = Label(frm9, text="")
 outputLabel.grid()
