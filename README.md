@@ -13,9 +13,10 @@ This is still in progress.
 It takes user input, error checks as needed, and parses it for the project 
 scheduler. 
 ## Use
-Before running the code, the Google client library for python must be downloaded. 
+Before running the code, the Google client library for python and the tkcalendar library must be downloaded. 
 ```bash
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip install tkcalendar
 ```
 ## Testing
 Automated tests have not yet been created for this program
