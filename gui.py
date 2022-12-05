@@ -15,8 +15,7 @@ from main import *
 
 from tkinter import *
 from tkinter import ttk
-from tkcalendar import Calendar
-
+from CalendarDialog import *
 from datetime import datetime
 import re
 
@@ -92,7 +91,15 @@ win.geometry("500x900")
 win.title("Project Scheduler")
 
 # create frames
-frm1 = ttk.Labelframe(win, text="Project Name: ", padding=10)
+projNameFrm = ttk.Frame(win, padding=10)
+dueDateFrm = ttk.Frame(win, padding=10)
+dataFrm = ttk.Frame(win, padding=10)
+genButtonFrm = ttk.Frame(win, padding=10)
+
+data_leftFrm = ttk.Frame(dataFrm, padding=10)
+data_rightFrm = ttk.Frame(dataFrm, padding=10)
+
+"""frm1 = ttk.Labelframe(win, text="Project Name: ", padding=10)
 frm2 = ttk.Labelframe(win, text="Number of hours to complete the project: ", padding=10)
 frm3 = ttk.Labelframe(win, text="Time (hours) to spend on project in one sitting: ", padding=10)
 frm4 = ttk.Labelframe(win, text="Date the project is due: ", padding=10)
@@ -101,12 +108,30 @@ frm6 = ttk.Labelframe(win, text="Limit working times: ", padding=10)
 frm7 = ttk.Labelframe(win, text="Time between events (mins): ", padding=10)
 frm8 = ttk.Frame(win, padding=10)   # for init button
 frm9 = ttk.Labelframe(win, text="Output: ", padding=10)
-
+"""
 # layout frames
+projNameFrm.grid(row=0, sticky="ew")
+dueDateFrm.grid(row=1, sticky="ew")
+dataFrm.grid(row=2, sticky="nsew")
+genButtonFrm.grid(row=3, sticky="ew")
 
-# name
+# project name widgets
+nameLabel = Label(projNameFrm, text="Project Name :")
+nameEntry = Entry(projNameFrm, width=40)
+nameLabel.grid(row=0, column=0)
+nameEntry.grid(row=0, column=1)
+
+# due date widgets
+now = datetime.today()
+dateLabel = Label(dueDateFrm, text="Due Date: ")
+endCalendar = CalendarFrame(dueDateFrm)
+dateLabel.grid(row=0, column=0)
+
+endCalendar.grid(row=0, column=1)
+
+"""# name
 frm1.grid()
-nameEntry = Entry(frm1, width=40)
+#nameEntry = Entry(frm1, width=40)
 nameEntry.grid()
 
 # hoursToComplete
@@ -177,7 +202,7 @@ button.grid()
 # output
 frm9.grid(column=1, row=3)
 outputLabel = Label(frm9, text="")
-outputLabel.grid()
+outputLabel.grid()"""
 
 win.mainloop()
 
