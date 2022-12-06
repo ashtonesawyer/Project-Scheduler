@@ -18,7 +18,7 @@ Before running the code, the Google client library for python and the tkcalendar
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 pip install tkcalendar
 ```
-In order to run with Google Calendar, you will have to have a Google Developer account and create Oath2.0 credentials. This process is described in detail in the [quickstart guide](https://external.ink?to=/developers.google.com/calendar/api/quickstart/python)
+In order to run with Google Calendar, you will have to have a Google Developer account and create Oath2.0 credentials. This process is described in detail in the     <a href="https://developers.google.com/calendar/api/quickstart/python" target="quickstart guide">Opens in new tab</a>
 ## Testing
 Automated tests have not yet been created for this program
 
