@@ -20,6 +20,14 @@ from datetime import datetime
 import re
 
 
+# for showing additional menus for days off
+def addOffMenu():
+    global count, offDrops
+    count += 1
+    if count < 6:
+        offDrops[count].grid(row=count+1)
+
+
 # for error output to screen
 def displayText(text):
     outputLabel.configure(text=text, fg='red')
@@ -52,7 +60,7 @@ def parseInfo():
         displayText("Error: Min hours needs to be a positive integer")
         return
     minHours = int(minHours)
-    endDate = datetime.strptime(endCalendar.get_date(), "%m/%d/%y").date()
+    endDate = datetime.strptime(endCalendar.selected_date, "%m/%d/%y").date()
     daysOff = []
     for index in range(6):
         if menus[index].get() != "--Select--":
@@ -87,14 +95,26 @@ def parseInfo():
 
 # setup window
 win = Tk()
-win.geometry("500x900")
+win.minsize(850, 440)
 win.title("Project Scheduler")
+win.grid_rowconfigure(0, weight=1)
+win.grid_columnconfigure(0, weight=1)
 
-# create frames
-projNameFrm = ttk.Frame(win, padding=10)
-dueDateFrm = ttk.Frame(win, padding=10)
-dataFrm = ttk.Frame(win, padding=10)
-genButtonFrm = ttk.Frame(win, padding=10)
+# create + config frames
+projNameFrm = ttk.Labelframe(win, padding=10)
+dueDateFrm = ttk.Labelframe(win, padding=10)
+dataFrm = ttk.Labelframe(win, padding=10)
+genButtonFrm = ttk.Labelframe(win, padding=10)
+
+projNameFrm.grid_rowconfigure(0, weight=1)
+dueDateFrm.grid_rowconfigure(0, weight=1)
+dataFrm.grid_rowconfigure(0, weight=1)
+genButtonFrm.grid_rowconfigure(0, weight=1)
+
+projNameFrm.grid_columnconfigure(0, weight=1)
+dueDateFrm.grid_columnconfigure(0, weight=1)
+dataFrm.grid_columnconfigure(0, weight=1)
+genButtonFrm.grid_columnconfigure(0, weight=1)
 
 data_leftFrm = ttk.Frame(dataFrm, padding=10)
 data_rightFrm = ttk.Frame(dataFrm, padding=10)
@@ -110,24 +130,115 @@ frm8 = ttk.Frame(win, padding=10)   # for init button
 frm9 = ttk.Labelframe(win, text="Output: ", padding=10)
 """
 # layout frames
-projNameFrm.grid(row=0, sticky="ew")
-dueDateFrm.grid(row=1, sticky="ew")
+projNameFrm.grid(row=0, sticky="new")
+dueDateFrm.grid(row=1, sticky="nsew")
 dataFrm.grid(row=2, sticky="nsew")
-genButtonFrm.grid(row=3, sticky="ew")
+genButtonFrm.grid(row=3, sticky="sew")
+
+data_leftFrm.grid(row=0, column=0)
+data_rightFrm.grid(row=0, column=1)
 
 # project name widgets
-nameLabel = Label(projNameFrm, text="Project Name :")
-nameEntry = Entry(projNameFrm, width=40)
+nameFrm = ttk.Frame(projNameFrm)
+nameFrm.grid(row=0)
+nameLabel = Label(nameFrm, text="Project Name:  ")
+nameEntry = Entry(nameFrm, width=40)
 nameLabel.grid(row=0, column=0)
 nameEntry.grid(row=0, column=1)
 
 # due date widgets
-now = datetime.today()
-dateLabel = Label(dueDateFrm, text="Due Date: ")
-endCalendar = CalendarFrame(dueDateFrm)
+dateFrm = ttk.Frame(dueDateFrm)
+dateFrm.grid(row=0)
+dateLabel = Label(dateFrm, text="Due Date: ")
+endCalendar = CalendarFrame(dateFrm)
 dateLabel.grid(row=0, column=0)
-
 endCalendar.grid(row=0, column=1)
+
+# data_left widgets
+#    hours
+hoursFrm = ttk.Frame(data_leftFrm, padding=5)
+hoursFrm.grid(row=0)
+
+hoursLabel = Label(hoursFrm, text="Hours to complete: ")
+hoursEntry = Entry(hoursFrm, width=40)
+hoursLabel.grid(row=0, column=0)
+hoursEntry.grid(row=0, column=1)
+
+#    time to work in one sitting
+sittingFrm = ttk.Frame(data_leftFrm, padding=5)
+sittingFrm.grid(row=1)
+
+sittingLabel = Label(sittingFrm, text="Hours to work in one sitting")
+maxLabel = Label(sittingFrm, text="Max: ")
+minLabel = Label(sittingFrm, text="Min: ")
+maxEntry = Entry(sittingFrm, width=35)
+minEntry = Entry(sittingFrm, width=35)
+sittingLabel.grid(row=1, column=0)
+maxLabel.grid(row=2, column=0)
+maxEntry.grid(row=2, column=1)
+minLabel.grid(row=3, column=0)
+minEntry.grid(row=3, column=1)
+
+#    days off
+daysOffFrm = ttk.Frame(data_leftFrm, padding=5)
+daysOffFrm.grid(row=3)
+
+daysLabel = Label(daysOffFrm, text="Days off")
+dayOptions = ["--Select--", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+menus = []             # list of menu options for offDrops
+offDrops = []          # list of OptionMenus
+count = 0              # how many days off are there
+for i in range(6):        # init menus
+    tmp = StringVar()
+    menus += [tmp]
+    menus[i].set("--Select--")
+for i in range(6):        # init options
+    tmp = OptionMenu(daysOffFrm, menus[i], *dayOptions)
+    offDrops += [tmp]
+addButton = Button(daysOffFrm, text="+", command=addOffMenu)
+
+daysLabel.grid(row=0)
+offDrops[0].grid(row=1)
+addButton.grid(row=7)
+
+# data_right widgets
+#    work times
+timesFrm = ttk.Frame(data_rightFrm, padding=5)
+timesFrm.grid(row=0)
+
+timesLabel = Label(timesFrm, text="Work time restrictions")
+earliestLabel = Label(timesFrm, text="Earliest: ")
+latestLabel = Label(timesFrm, text="Latest: ")
+earliestEntry = Entry(timesFrm, width=20)
+latestEntry = Entry(timesFrm, width=20)
+timeMenus = []
+timeOptions = ["AM", "PM"]
+for i in range(2):
+    tmp = StringVar()
+    timeMenus += [tmp]
+    timeMenus[i].set("AM")
+earlyDrop = OptionMenu(timesFrm, timeMenus[0], *timeOptions)
+lateDrop = OptionMenu(timesFrm, timeMenus[1], *timeOptions)
+timesLabel.grid(row=0)
+earliestLabel.grid(row=1, column=0)
+latestLabel.grid(row=2, column=0)
+earliestEntry.grid(row=1, column=1)
+latestEntry.grid(row=2, column=1)
+earlyDrop.grid(row=1, column=3)
+lateDrop.grid(row=2, column=3)
+
+#    buffer
+buffFrm = ttk.Frame(data_rightFrm, padding=5)
+buffFrm.grid(row=1)
+
+bufferLabel = Label(buffFrm, text="Buffer between events (mins): ")
+bufferEntry = Entry(buffFrm, width=40)
+bufferLabel.grid(row=0, column=0)
+bufferEntry.grid(row=0, column=1)
+
+# generate widget
+genButton = Button(genButtonFrm, text="Generate Events", command=parseInfo)
+genButton.grid(row=0, column=0, sticky="")
 
 """# name
 frm1.grid()

@@ -2,7 +2,7 @@
 https://github.com/moshekaplan/tkinter_components/tree/master/CalendarDialog
 """
 
-from tkinter import Frame, StringVar, Entry, Button, LEFT, Tk
+from tkinter import Frame, StringVar, Entry, Button, LEFT
 from tkinter import simpledialog
 import tkcalendar
 
