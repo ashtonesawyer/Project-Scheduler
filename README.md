@@ -1,5 +1,3 @@
-<base target="_blank">
-
 # Project Scheduler 
 ## Description
 This program will take in information about a project, including the 
