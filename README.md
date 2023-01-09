@@ -7,7 +7,8 @@ work on the given project.
 ### Elements
 #### Project Scheduler
 This is the main driver of the project. It manages all of the data
-and interfaces with Google Calendar. 
+and interfaces with Google Calendar. There are currently relatively minor bugs with the scheduler, 
+namely difficulty parsing free time when there are overlapping events already in the calendar. 
 #### GUI 
 This is still in progress. 
 It takes user input, error checks as needed, and parses it for the project 
