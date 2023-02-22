@@ -1,5 +1,5 @@
 """ Created by Ashton Sawyer 10/31/22
-This is the main functions for the project scheduler (see scheduler.py)
+These are the main functions for the project scheduler (see scheduler.py)
 """
 
 from scheduler import *
